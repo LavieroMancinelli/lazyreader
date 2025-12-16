@@ -24,6 +24,8 @@ let curLine = 0;
 let curWordInLine = 0; // index of highlighted word (in context of current line)
 let curWord = 0; // index of highlighted word overall
 let wordsInPassage = 0;
+let passageXTrans = 0;
+let passageYTrans = 0;
 
 
 function addWordToLine() {
@@ -52,29 +54,33 @@ function processTextEntry(element, index)  {
     //console.log("linecharcount", lineCharCount);
 }
 
+function clearPassages() {
+    for (let i = 0; i < LINES_DISPLATED; ++i)
+        passages[i].innerHTML = "";
+}
+
 function updatePassageDisplay() {
     for (let i = 0; i < LINES_DISPLAYED; ++i) {
         let lineToRead = curLine + i - (LINES_DISPLAYED-1)/2;
         if (lineToRead >= 0 && lineToRead < lines.length) {
             passages[i].innerHTML = lines[lineToRead]; 
             //console.log("line printed: ", i);
-        } else if (lineToRead >= lines.length) {
+        } else {
             passages[i].innerHTML = ""; 
         }
     }
 }
 
 function textEntrySubmit() {
-
-    //const passage = document.querySelector(".passage");
     const textEntryField = document.querySelector(".text-entry");
     Array.from(textEntryField.value, processTextEntry);
     addWordToLine();
     pushLine(); // for end of input
     updatePassageDisplay();
-    //passage.innerHTML = lines[0] + " " + lines[1];
-    //console.log("words per line: ", CHARS_PER_LINE);
-    //console.log("lines created: ", lines.length);
+}
+
+function movePassage(x, y) {
+    animate(".passage", { x: x, y: y }, { ease: ["linear", "linear"] });
 }
 
 function delay(amt) {
@@ -83,6 +89,8 @@ function delay(amt) {
 
 async function beginPlay() {
     console.log("playing");
+
+    //clearPassages();
 
     curWord = 0;
     curWordInLine = 0;
@@ -94,6 +102,10 @@ async function beginPlay() {
         let curLineSplit = lines[curLine].split(' ');
         curLineSplit.pop();
         let curLineLength = curLineSplit.length;
+        //passageXTrans -= 11*curLineSplit[curWordInLine].length;
+        passageXTrans -= 10 * (lines[curLine].length / curLineLength);
+        // could just scroll smoothly based off of width of line (in words)
+        animate(".passage", { x: (passageXTrans) }, { ease: "circInOut" });
         curLineSplit[curWordInLine] = "<mark>" + curLineSplit[curWordInLine] + "</mark>";
         let curLineMarked = curLineSplit.join(' ');
         lines[curLine] = curLineMarked;
@@ -103,14 +115,16 @@ async function beginPlay() {
         ++curWordInLine;
         if (curWordInLine >= curLineLength) {
             curWordInLine = 0;
+            passageXTrans = 0;
             ++curLine;
         }
         
         console.log("curWord: ", curWord, " wordsInPassage: ", wordsInPassage, " curLineLength: ", curLineLength, "curLine: ", curLine);
+        
         await delay(delay_amt);
         
     }
     console.log("DONE");
 }
 
-animate(".main", { y: 200 });
+//animate(".main", { y: 200 });

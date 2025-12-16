@@ -4,7 +4,7 @@ h1 {
 }
 
 .main {
-    max-width: 800px;
+    /*max-width: 800px;*/
     width: 100%;
     margin: 0 auto;
     background: white;
@@ -13,14 +13,24 @@ h1 {
     padding: 50px;
 }
 
-.passage {
+.passage-wrap {
     font-size: 2rem;
+    position: fixed;
+    left: 42vw;
 }
 
 .passage-entry {
-    width: auto;
+    position: relative;
     display: flex;
     align-items: end;
     justify-content: center;
     margin: 50px;
+    white-space: nowrap;
+}
+
+.passage {
+    right: -200vw;
+    margin-right: 100vw; 
+    width: 100vw;
+    
 }
