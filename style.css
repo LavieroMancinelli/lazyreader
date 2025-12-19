@@ -10,7 +10,6 @@ h1 {
     margin: 0 auto;
     background: white;
     min-height: calc(100vh - 100px);
-    /*box-shadow: 0px 0px 2px lightgray;*/
     padding: 50px;
 }
 
@@ -32,7 +31,6 @@ h1 {
 
 .passage-entry .text-entry {
     border-radius: 10px;
-    /*border: 3px lightgray solid;*/
     padding: 5px;
     margin: 0;
     /*margin-right: 3rem;*/
@@ -74,7 +72,7 @@ h1 {
 .config-panel h2 {
     margin-bottom: 1rem;
     padding: 0;
-    font-family: "Nunito";/*"Noto Sans", sans-serif;*/
+    font-family: "Nunito", "sans-serif";
     color: gray;
 }
 
@@ -127,10 +125,6 @@ h1 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-}
-
-.settings-section-wrap .settings-entry {
-    /*background: yellow;*/
 }
 
 .config-spacer {
@@ -186,6 +180,94 @@ h1 {
 }
 
 .info-button:hover {
+    background: transparent;
+    cursor: pointer;
+}
+
+.play-button {
+    padding: 0.5rem 2.5rem;
+    background: rgb(100, 255, 108);
+    color: black;
+    font-weight: 600;
+    border: 0;
+    border-radius: 2rem;
+    font-family: "Noto sans", "sans-serif";
+    font-size: 1.2rem;
+    cursor: default;
+}
+
+.play-button:hover {
+    background: rgb(78, 201, 84);
+    cursor: pointer;
+}
+
+
+.info-panel-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0 0;
+    position: fixed;
+    z-index: 5;
+    backdrop-filter: blur(5px);
+}
+
+
+.info-panel {
+    width: auto;
+    max-width: 25%;
+    height: auto;
+    margin: 0 0;
+    padding: 2rem 5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    
+    
+    position: fixed;
+
+    box-shadow: 0px 0px 3px lightgray;
+    border-radius: 20px;
+    z-index: 7;
+}
+
+
+.info-panel-bg {
+    display: flex;
+    position: fixed;
+    z-index: 6;
+    height: 100vh;
+    width: 100vw;
+    background: transparent;
+}
+
+.info-panel h2 {
+    margin-bottom: 1rem;
+    padding: 0;
+    font-family: "Nunito", "sans-serif";
+    color: gray;
+}
+
+.info-panel p {
+    font-family: "Noto Sans", "sans-serif";
+}
+
+
+.info-panel .close-button {
+    position: absolute;
+    right: 4%;
+    top: 4%;
+    background: transparent;
+    cursor: default;
+    border: none;
+    font-size: 2rem;
+}
+
+.info-panel .close-button:hover {
     background: transparent;
     cursor: pointer;
 }

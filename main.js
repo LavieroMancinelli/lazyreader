@@ -1,7 +1,5 @@
 import { animate } from "https://cdn.jsdelivr.net/npm/motion@latest/+esm";
 
-//const textEntryButton = document.querySelector(".text-entry-button");
-//textEntryButton.addEventListener("click", textEntrySubmit);
 const playButton = document.querySelector(".play-button");
 playButton.addEventListener("click", beginPlayFromPanel);
 const configButton = document.querySelector(".open-config-button");
@@ -20,6 +18,14 @@ wpmInput.addEventListener("keydown", function(event) {
         wpmInputSubmit();
     }
 });
+const infoButton = document.querySelector(".info-button");
+infoButton.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openInfoPanel();
+});
+const closeInfoButton = document.querySelector(".close-button");
+closeInfoButton.addEventListener("click", closeInfoPanel);
+const infoPanel = document.querySelector(".info-panel");
 
 
 
@@ -45,6 +51,7 @@ let wordsInPassage = 0;
 let passageXTrans = 0;
 let passageYTrans = 0;
 let playing = false;
+let infoOpen = true;
 
 
 document.addEventListener('keydown', function(event) {
@@ -57,6 +64,14 @@ document.addEventListener('keyup', function(event) {
         effectiveWPM = WPM;
     }
 });
+
+document.addEventListener("click", function(event) {
+    if (infoOpen && !infoPanel.contains(event.target)) closeInfoPanel();
+});
+infoPanel.addEventListener("click", (e) => {
+    e.stopPropagation();
+});
+
 
 function addWordToLine() {
     line += (word + ' ');
@@ -106,7 +121,6 @@ function clearLines() {
 }
 
 function textEntrySubmit() {
-    //clearLines();
     Array.from(textEntryField.value, processTextEntry);
     addWordToLine();
     pushLine(); // for end of input
@@ -116,10 +130,6 @@ function textEntrySubmit() {
 function wpmInputSubmit() {
     WPM = wpmInput.valueAsNumber;
     effectiveWPM = WPM;
-}
-
-function movePassage(x, y) {
-    animate(".passage", { x: x, y: y }, { ease: ["linear", "linear"] });
 }
 
 function delay(amt) {
@@ -147,13 +157,10 @@ async function beginPlay() {
         if (curLine >= 0 && curLine < lines.length) 
             unMarkedLine = lines[curLine];
         else continue;
-        //unMarkedLine = curLine >= 0 ? lines[curLine] : [];
         let curLineSplit = unMarkedLine.split(' ');
         curLineSplit.pop();
         let curLineLength = curLineSplit.length;
-        //passageXTrans -= 11*curLineSplit[curWordInLine].length;
         passageXTrans -= 10 * (unMarkedLine.length / curLineLength);
-        // could just scroll smoothly based off of width of line (in words)
         animate(".passage", { x: (passageXTrans) }, { ease: "circInOut" });
         curLineSplit[curWordInLine] = "<mark>" + curLineSplit[curWordInLine] + "</mark>";
         let curLineMarked = curLineSplit.join(' ');
@@ -168,14 +175,11 @@ async function beginPlay() {
             ++curLine;
         }
         
-        //console.log("curWord: ", curWord, " wordsInPassage: ", wordsInPassage, " curLineLength: ", curLineLength, "curLine: ", curLine);
-        
         await delay(60 / effectiveWPM * 1000);
         
     }
 } 
 
-// add check for if passage text changed -> reset read position
 async function openConfigMenu() {
     playing = false;
 
@@ -187,4 +191,20 @@ async function openConfigMenu() {
     document.querySelector(".config-panel-bg").style.display = "flex";
     animate(".config-panel", {y: 0});
     await delay(500);
+}
+
+async function openInfoPanel() {
+    infoOpen = true;
+    document.querySelector(".info-panel").style.display = "flex";
+    document.querySelector(".info-panel-wrap").style.display = "flex";
+    animate(".info-panel", { opacity: 1 });
+    await delay(200);
+}
+
+async function closeInfoPanel() {
+    infoOpen = false;
+    animate(".info-panel", { opacity: 0 });
+    await delay(200);
+    document.querySelector(".info-panel-wrap").style.display = "none";
+    document.querySelector(".info-panel").style.display = "none";
 }
