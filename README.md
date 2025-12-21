@@ -11,3 +11,6 @@ Traditional reading speed is often limited by the speed of mechanical eye moveme
 2. Set a comfortable words-per-minute (WPM) reading rate
 3. Click **Start Reading**
 4. (Optional) Hold **Spacebar** to temporarily halve the reading speed
+
+## License
+MIT License
