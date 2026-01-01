@@ -57,6 +57,9 @@ let infoOpen = true;
 document.addEventListener('keydown', function(event) {
     if (event.key === ' ') {
         effectiveWPM = WPM / 2;
+    } else if (event.key === 'Escape') {
+        if (playing) openConfigMenu();
+        else if (infoOpen) closeInfoPanel();
     }
 });
 document.addEventListener('keyup', function(event) {
@@ -186,6 +189,7 @@ async function openConfigMenu() {
     // assuming no resume
     clearLines();
     animate(".passage", { x: 0 }, { steps: 1})
+    passageXTrans = 0;
 
     document.querySelector(".config-panel-wrap").style.display = "flex";
     document.querySelector(".config-panel-bg").style.display = "flex";
